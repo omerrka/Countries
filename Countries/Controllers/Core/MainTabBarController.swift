@@ -2,7 +2,7 @@
 //  MainTabBar.swift
 //  Countries
 //
-//  Created by Aybike Zeynep Tiryaki on 20.03.2023.
+//  Created by Ömer Karabulut on 20.03.2023.
 //
 
 import UIKit
@@ -17,8 +17,8 @@ final class MainTabBarController: UITabBarController {
     
     private func setUpTabs() {
         
-        let vc1 = RootNavigationController(rootViewController: HomePageViewController())
-        let vc2 = RootNavigationController(rootViewController: SavedPageViewController())
+        let vc1 = RootNavigationController(rootViewController: HomeViewController())
+        let vc2 = RootNavigationController(rootViewController: SavedViewController())
         
         vc1.tabBarItem.image = UIImage(systemName: "house.fill")
         vc2.tabBarItem.image = UIImage(systemName: "heart.fill")

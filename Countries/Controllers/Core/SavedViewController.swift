@@ -2,19 +2,16 @@
 //  SavedPageViewController.swift
 //  Countries
 //
-//  Created by Aybike Zeynep Tiryaki on 20.03.2023.
+//  Created by Ömer Karabulut on 20.03.2023.
 //
 
 import UIKit
 
-class SavedPageViewController: UIViewController {
-
+final class SavedViewController: UIViewController {
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
-    
-
-
-
 }
