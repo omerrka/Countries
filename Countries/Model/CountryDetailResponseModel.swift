@@ -2,7 +2,7 @@
 //  CountryDetailResponseModel.swift
 //  Countries
 //
-//  Created by Aybike Zeynep Tiryaki on 21.03.2023.
+//  Created by Ömer Karabulut on 21.03.2023.
 //
 
 import Foundation

@@ -1,5 +1,5 @@
 //
-//  HomePageViewController.swift
+//  HomeViewController.swift
 //  Countries
 //
 //  Created by Ömer Karabulut on 20.03.2023.
@@ -7,43 +7,40 @@
 
 import UIKit
 
-final class HomeViewController: UIViewController, HomeTableViewCellDelegate {
+final class HomeViewController: UIViewController {
     
-    private var starIsSelected = false
-        
     var tableView = UITableView()
-    
     private let viewModel = HomeViewModel()
+    let homeNotification = Notification.Name(rawValue: Constants.homeNotificationKey)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGray3
+        view.backgroundColor = .systemGray4
         configureTableView()
         setTableViewDelegates()
+        navigationController?.navigationBar.topItem?.backButtonTitle = ""
         navigationItem.title = "Countries"
         viewModel.delegate = self
         viewModel.loadCountriesData()
+        createObservers()
         
     }
     
-    func addFavoriteStarButton(_ indexPath: IndexPath) {
-        
-        SavedCountires.shared.myArray.append(viewModel.countriesListData[indexPath.row])
-        
-        
+    private func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(HomeViewController.reloadTableView(notification:)), name: homeNotification, object: nil)
     }
     
-    func removeFavoriteStarButton(_ indexPath: IndexPath) {
-        if let Index = SavedCountires.shared.myArray.firstIndex(where: { $0.name == viewModel.countriesListData[indexPath.row].name }) {
-            SavedCountires.shared.myArray.remove(at: Index)
-            
+    @objc
+    func reloadTableView(notification: NSNotification) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
     private func configureTableView() {
         view.addSubview(tableView)
         setTableViewDelegates()
-        tableView.backgroundColor = .systemGray3
+        tableView.backgroundColor = .systemGray4
         tableView.separatorStyle = .none
         tableView.register(HomeTableViewCell.self, forCellReuseIdentifier: Constants.homeTableViewCell)
         tableView.pin(to: view)
@@ -55,7 +52,22 @@ final class HomeViewController: UIViewController, HomeTableViewCellDelegate {
     }
 }
 
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource, HomeViewModelDelegate {
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource, HomeViewModelDelegate, HomeTableViewCellDelegate {
+    
+    func buttonTintColorChancer(_ indexPath: IndexPath, button: UIButton) {
+        
+        if !SavedCountires.shared.myArray.contains(where: { $0.name == viewModel.countriesListData[indexPath.row].name }) {
+            button.tintColor = .black
+            SavedCountires.shared.myArray.append(viewModel.countriesListData[indexPath.row])
+            
+        } else {
+            button.tintColor = .systemGray3
+            if let Index = SavedCountires.shared.myArray.firstIndex(where: { $0.name == viewModel.countriesListData[indexPath.row].name }) {
+                SavedCountires.shared.myArray.remove(at: Index)
+                
+            }
+        }
+    }
     
     func reloadTableView() {
         DispatchQueue.main.async {
@@ -74,8 +86,15 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource, HomeVi
         cell.configureCell(myArray: SavedCountires.shared.myArray, model: viewModel.countriesListData[indexPath.row])
         cell.delegate = self
         cell.indexPath = indexPath
+        cell.backgroundColor = .systemGray4
+        if !SavedCountires.shared.myArray.contains(where: { $0.name == viewModel.countriesListData[indexPath.row].name }) {
+            cell.starButton.tintColor = .systemGray3
+            
+        } else {
+            cell.starButton.tintColor = .black
+            
+        }
         
-        cell.backgroundColor = .systemGray3
         return cell
         
     }
@@ -86,8 +105,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource, HomeVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
+        vc.indexPath = indexPath
         vc.code = viewModel.countriesListData[indexPath.row].code
         vc.wikiID = viewModel.countriesListData[indexPath.row].wikiDataID
+        vc.configureCells(newArray: viewModel.countriesListData)
+        
         navigationController?.pushViewController(vc, animated: false)
         tableView.deselectRow(at: indexPath, animated: false)
     }

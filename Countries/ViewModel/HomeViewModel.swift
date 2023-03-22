@@ -1,5 +1,5 @@
 //
-//  HomePageViewModel.swift
+//  HomeViewModel.swift
 //  Countries
 //
 //  Created by Ömer Karabulut on 20.03.2023.
@@ -15,7 +15,6 @@ protocol HomeViewModelDelegate: AnyObject {
 final class HomeViewModel: NSObject {
     
     public weak var delegate: HomeViewModelDelegate?
-    
     fileprivate(set) var countriesListData = [CountriesData]()
     
     private let networkManager: NetworkManager
@@ -27,7 +26,6 @@ final class HomeViewModel: NSObject {
     func loadCountriesData() {
         
         networkManager.fetchCountriesResult(completion: { [weak self] result in
-            
             guard let strongSelf = self else { return }
             switch result {
             case .success(let countriesData):
@@ -39,3 +37,4 @@ final class HomeViewModel: NSObject {
         })
     }
 }
+

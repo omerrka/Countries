@@ -1,23 +1,21 @@
 //
-//  HomeTableViewCell.swift
+//  SavedTableViewCell.swift
 //  Countries
 //
-//  Created by Ömer Karabulut on 20.03.2023.
+//  Created by Ömer Karabulut on 22.03.2023.
 //
+
 
 import UIKit
 
-protocol HomeTableViewCellDelegate: AnyObject {
-    func buttonTintColorChancer(_ indexPath: IndexPath, button: UIButton)
+protocol SavedTableViewCellDelegate: AnyObject {
+    func removeStarButton(_ indexPath: IndexPath)
 }
 
-final class HomeTableViewCell: UITableViewCell {
+
+final class SavedTableViewCell: UITableViewCell {
     
-    private var starIsSelected = false
-    private let viewModel = HomeViewModel()
-    var myArray: [CountriesData]?
-    var model: CountriesData?
-    public weak var delegate: HomeTableViewCellDelegate?
+    public weak var delegate: SavedTableViewCellDelegate?
     var indexPath: IndexPath!
     
     public let countryTitleLabel: UILabel = {
@@ -26,7 +24,7 @@ final class HomeTableViewCell: UITableViewCell {
         countryTitle.numberOfLines = 0
         countryTitle.layer.cornerRadius = 16
         countryTitle.layer.masksToBounds = true
-        countryTitle.layer.borderWidth = 2
+        countryTitle.layer.borderWidth = 3
         countryTitle.layer.borderColor = UIColor.black.cgColor
         return countryTitle
     }()
@@ -35,6 +33,7 @@ final class HomeTableViewCell: UITableViewCell {
         let starButton = UIButton()
         starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
         starButton.imageView?.contentMode = .scaleAspectFit
+        starButton.tintColor = .black
         starButton.imageEdgeInsets = UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
         return starButton
     }()
@@ -43,7 +42,7 @@ final class HomeTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews(countryTitleLabel)
         contentView.addSubview(starButton)
-        starButton.addTarget(self, action: #selector(starButtonAction(sender:)), for: .touchUpInside)
+        starButton.addTarget(self, action: #selector(starAction(sender:)), for: .touchUpInside)
         setCountryTitleLabelConstraints()
         setStarButtonConstraints()
         
@@ -53,11 +52,6 @@ final class HomeTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configureCell(myArray: [CountriesData], model: CountriesData) {
-        self.myArray = myArray
-        self.model = model
-        
-    }
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -66,18 +60,22 @@ final class HomeTableViewCell: UITableViewCell {
     }
     
     @objc
-    func starButtonAction(sender: UIButton) {
+    func starAction(sender: UIButton) {
         
-        delegate?.buttonTintColorChancer(indexPath, button: starButton)
+        delegate?.removeStarButton(indexPath)
         let name = Notification.Name(rawValue: Constants.savedNotificationKey)
         NotificationCenter.default.post(name: name, object: nil)
+        let name1 = Notification.Name(rawValue: Constants.homeNotificationKey)
+        NotificationCenter.default.post(name: name1, object: nil)
         
     }
+    
     
     public func setupCountryList(country: CountriesData) {
         
         countryTitleLabel.text = "   " + "\(country.name)"
     }
+    
     
     private func setCountryTitleLabelConstraints() {
         

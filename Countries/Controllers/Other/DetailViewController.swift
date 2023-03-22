@@ -1,5 +1,5 @@
 //
-//  DetailPageViewController.swift
+//  DetailViewController.swift
 //  Countries
 //
 //  Created by Ömer Karabulut on 20.03.2023.
@@ -14,6 +14,8 @@ class DetailViewController: UIViewController {
     public var code: String = String()
     public var wikiID: String = String()
     private let viewModel = DetailViewModel()
+    var indexPath: IndexPath!
+    var newArray: [CountriesData]?
     
     private let flagImageView: UIImageView = {
         let image = UIImageView()
@@ -41,10 +43,9 @@ class DetailViewController: UIViewController {
         return backView
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .systemGray4
         view.addSubviews(flagImageView, countryCodeLabel, buttonBackView, navigateButton)
         navigateButton.addTarget(self, action: #selector(moreInfoAction(sender:)), for: .touchUpInside)
         viewModel.delegate = self
@@ -52,21 +53,40 @@ class DetailViewController: UIViewController {
         viewModel.loadCountryDetailData(code: code)
         setNavigationItem()
         
+    }
+    
+    public func configureCells(newArray: [CountriesData]) {
+        self.newArray = newArray
         
     }
     
     @objc
     func settingsTapped() {
-        print("hello")
         
+        if !SavedCountires.shared.myArray.contains(where: { $0.name == newArray![indexPath.row].name }) {
+            SavedCountires.shared.myArray.append(newArray![indexPath.row])
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(settingsTapped))
+            
+        } else {
+            if let Index = SavedCountires.shared.myArray.firstIndex(where: { $0.name == newArray![indexPath.row].name }) {
+                SavedCountires.shared.myArray.remove(at: Index)
+                navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(settingsTapped))
+                
+            }
+        }
+        
+        let name = Notification.Name(rawValue: Constants.savedNotificationKey)
+        NotificationCenter.default.post(name: name, object: nil)
+        let name1 = Notification.Name(rawValue: Constants.homeNotificationKey)
+        NotificationCenter.default.post(name: name1, object: nil)
     }
     
     @objc
     func moreInfoAction(sender: UIButton) {
         guard let url = URL(string: "https://www.wikidata.org/wiki/" + "\(wikiID)") else {
-          return
+            return
         }
-
+        
         if #available(iOS 10.0, *) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         } else {
@@ -76,9 +96,15 @@ class DetailViewController: UIViewController {
     
     private func setNavigationItem()  {
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(settingsTapped))
-        
+        if !SavedCountires.shared.myArray.contains(where: { $0.code == self.code }) {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star"), style: .plain, target: self, action: #selector(settingsTapped))
+            
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"), style: .plain, target: self, action: #selector(settingsTapped))
+            
+        }
     }
+    
     
     private func setViewConstraints() {
         
@@ -101,7 +127,7 @@ class DetailViewController: UIViewController {
         navigateButton.translatesAutoresizingMaskIntoConstraints = false
         navigateButton.centerXAnchor.constraint(equalTo: buttonBackView.centerXAnchor).isActive = true
         navigateButton.centerYAnchor.constraint(equalTo: buttonBackView.centerYAnchor).isActive = true
-
+        
     }
 }
 
@@ -113,7 +139,7 @@ extension DetailViewController: DetailViewModelDelegate {
             self.countryCodeLabel.text = "Country Code:" + " \(self.viewModel.countryDetail?.code ?? "")"
             self.countryCodeLabel.halfTextFontChange(fullText: self.countryCodeLabel.text!, changeText: "Country Code:")
             self.flagImageView.kf.setImage(with: URL(string: "\(self.viewModel.countryDetail?.flagImageURI ?? "")"), options: [.processor(SVGImgProcessor())])
-    
+            
         }
     }
 }

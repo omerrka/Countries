@@ -8,7 +8,6 @@
 import UIKit
 
 final class RootNavigationController: UINavigationController {
-  
     
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
@@ -29,7 +28,7 @@ final class RootNavigationController: UINavigationController {
         let appearance = UINavigationBarAppearance()
         
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor.systemGray3
+        appearance.backgroundColor = UIColor.systemGray4
         appearance.titleTextAttributes = [.font: UIFont.boldSystemFont(ofSize: 18.0), .foregroundColor: UIColor.black]
         
         self.navigationBar.tintColor = .black

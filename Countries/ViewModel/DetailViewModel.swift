@@ -2,7 +2,7 @@
 //  DetailViewModel.swift
 //  Countries
 //
-//  Created by Aybike Zeynep Tiryaki on 21.03.2023.
+//  Created by Ömer Karabulut on 21.03.2023.
 //
 
 import Moya
@@ -14,9 +14,7 @@ protocol DetailViewModelDelegate: AnyObject {
 
 final class DetailViewModel: NSObject {
     
-    
     fileprivate(set) var countryDetail: CountryDetailData?
-    
     public weak var delegate: DetailViewModelDelegate?
     
     private let networkManager: NetworkManager
@@ -28,7 +26,6 @@ final class DetailViewModel: NSObject {
     func loadCountryDetailData(code: String) {
         
         networkManager.fetchCountryDetailResult(code: code ,completion: { [weak self] result in
-            
             guard let strongSelf = self else { return }
             switch result {
             case .success(let countryDetailData):

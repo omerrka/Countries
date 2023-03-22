@@ -29,7 +29,6 @@ extension CountriesAPI: TargetType {
         }
     }
     
-    
     var method: Moya.Method {
         return .get
     }
