@@ -8,13 +8,13 @@ PODS:
     - Moya/Core (= 15.0.0)
   - Moya/Core (15.0.0):
     - Alamofire (~> 5.0)
-  - SVGKit (3.0.0):
+  - SVGKit (3.1.0):
     - CocoaLumberjack (~> 3.0)
 
 DEPENDENCIES:
   - Kingfisher (~> 7.0)
   - Moya (~> 15.0)
-  - SVGKit
+  - SVGKit (from `https://github.com/SVGKit/SVGKit.git`, branch `3.x`)
 
 SPEC REPOS:
   trunk:
@@ -22,15 +22,24 @@ SPEC REPOS:
     - CocoaLumberjack
     - Kingfisher
     - Moya
-    - SVGKit
+
+EXTERNAL SOURCES:
+  SVGKit:
+    :branch: 3.x
+    :git: https://github.com/SVGKit/SVGKit.git
+
+CHECKOUT OPTIONS:
+  SVGKit:
+    :commit: 8c290ceee19254f6d0da1940201d5efa31b48f9f
+    :git: https://github.com/SVGKit/SVGKit.git
 
 SPEC CHECKSUMS:
   Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   Kingfisher: cd762a593a61b2fbecf7645c00f9a801a3ebfc9c
   Moya: 138f0573e53411fb3dc17016add0b748dfbd78ee
-  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
+  SVGKit: 3c8468aab0026048532a3b27a0c81cdd939f0649
 
-PODFILE CHECKSUM: efa4d95f91d5db6388518272742c3c4ba1f68bb9
+PODFILE CHECKSUM: c685658dd964d44643a65fde7ff076537b19ff38
 
 COCOAPODS: 1.11.3

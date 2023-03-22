@@ -8,5 +8,5 @@ target 'Countries' do
   # Pods for Countries
 pod 'Moya', '~> 15.0'
 pod 'Kingfisher', '~> 7.0'
-pod 'SVGKit'
+pod 'SVGKit', :git => 'https://github.com/SVGKit/SVGKit.git', :branch => '3.x'
 end
