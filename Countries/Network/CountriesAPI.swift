@@ -9,7 +9,8 @@ import Moya
 
 enum CountriesAPI {
     
-    case homePageScreen
+    case homeScreen
+    case detailScreen(code: String)
     
 }
 
@@ -21,8 +22,10 @@ extension CountriesAPI: TargetType {
     
     var path: String {
         switch self {
-        case .homePageScreen:
+        case .homeScreen:
             return ""
+        case .detailScreen(let code):
+            return "\(code)"
         }
     }
     
@@ -38,8 +41,10 @@ extension CountriesAPI: TargetType {
     var task: Task {
         
         switch self {
-        case .homePageScreen:
+        case .homeScreen:
             return .requestParameters(parameters: ["rapidapi-key": Constants.APIKey, "limit": "10"], encoding: URLEncoding.queryString)
+        case .detailScreen:
+            return .requestParameters(parameters: ["rapidapi-key": Constants.APIKey], encoding: URLEncoding.queryString)
         }
     }
     

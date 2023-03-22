@@ -12,7 +12,7 @@ protocol HomeViewModelDelegate: AnyObject {
     
 }
 
-final class HomePageViewModel: NSObject {
+final class HomeViewModel: NSObject {
     
     public weak var delegate: HomeViewModelDelegate?
     

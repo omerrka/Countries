@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SVGKit
 
 extension UIView {
     
@@ -25,4 +26,15 @@ extension UIView {
         })
     }
 }
+
+extension UILabel {
+    func halfTextFontChange (fullText : String , changeText : String ) {
+        let strNumber: NSString = fullText as NSString
+        let range = (strNumber).range(of: changeText)
+        let attribute = NSMutableAttributedString.init(string: fullText)
+        attribute.addAttribute(NSAttributedString.Key.font, value: UIFont.boldSystemFont(ofSize: 16) , range: range)
+        self.attributedText = attribute
+    }
+}
+
 

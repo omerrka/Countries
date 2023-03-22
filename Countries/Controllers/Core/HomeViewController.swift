@@ -13,7 +13,7 @@ final class HomeViewController: UIViewController, HomeTableViewCellDelegate {
         
     var tableView = UITableView()
     
-    private let viewModel = HomePageViewModel()
+    private let viewModel = HomeViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +29,7 @@ final class HomeViewController: UIViewController, HomeTableViewCellDelegate {
     func addFavoriteStarButton(_ indexPath: IndexPath) {
         
         SavedCountires.shared.myArray.append(viewModel.countriesListData[indexPath.row])
+        
         
     }
     
@@ -85,6 +86,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource, HomeVi
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
+        vc.code = viewModel.countriesListData[indexPath.row].code
+        vc.wikiID = viewModel.countriesListData[indexPath.row].wikiDataID
         navigationController?.pushViewController(vc, animated: false)
         tableView.deselectRow(at: indexPath, animated: false)
     }

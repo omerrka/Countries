@@ -13,18 +13,22 @@ protocol Networkable {
     var provider: MoyaProvider<CountriesAPI> { get }
     
     func fetchCountriesResult(completion: @escaping (Result<Countries, Error>) -> ())
+    func fetchCountryDetailResult(code: String, completion: @escaping (Result<CountryDetail, Error>) -> ())
     
 }
 
 class NetworkManager: Networkable {
     
     var provider = MoyaProvider<CountriesAPI>(plugins: [NetworkLoggerPlugin()])
-
-        func fetchCountriesResult(completion: @escaping (Result<Countries, Error>) -> ()) {
-            request(target: .homePageScreen, completion: completion)
-        }
+    
+    func fetchCountriesResult(completion: @escaping (Result<Countries, Error>) -> ()) {
+        request(target: .homeScreen, completion: completion)
     }
-
+    
+    func fetchCountryDetailResult(code: String, completion: @escaping (Result<CountryDetail, Error>) -> ()) {
+        request(target: .detailScreen(code: code), completion: completion)
+    }
+}
 
 private extension NetworkManager {
     private func request<T: Decodable>(target: CountriesAPI, completion: @escaping (Result<T, Error>) -> ()) {

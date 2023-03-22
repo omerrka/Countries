@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol HomeTableViewCellDelegate {
+protocol HomeTableViewCellDelegate: AnyObject {
     func addFavoriteStarButton(_ indexPath: IndexPath)
     func removeFavoriteStarButton(_ indexPath: IndexPath)
 }
@@ -15,9 +15,10 @@ protocol HomeTableViewCellDelegate {
 final class HomeTableViewCell: UITableViewCell {
     
     private var starIsSelected = false
+    private let viewModel = HomeViewModel()
     var myArray: [CountriesData]?
     var model: CountriesData?
-    var delegate: HomeTableViewCellDelegate?
+    public weak var delegate: HomeTableViewCellDelegate?
     var indexPath: IndexPath!
         
     public let countryTitleLabel: UILabel = {
@@ -73,12 +74,16 @@ final class HomeTableViewCell: UITableViewCell {
             self.starButton.tintColor = .black
             starIsSelected = true
             self.delegate?.addFavoriteStarButton(indexPath)
+            let name = Notification.Name(rawValue: Constants.notificationKey)
+            NotificationCenter.default.post(name: name, object: nil)
 
         } else {
             self.starButton.tintColor = .systemGray5
             starIsSelected = false
             self.delegate?.removeFavoriteStarButton(indexPath)
-            
+            let name = Notification.Name(rawValue: Constants.notificationKey)
+            NotificationCenter.default.post(name: name, object: nil)
+
         }
     }
     
