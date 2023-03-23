@@ -8,10 +8,8 @@
 import Moya
 
 enum CountriesAPI {
-    
     case homeScreen
     case detailScreen(code: String)
-    
 }
 
 extension CountriesAPI: TargetType {
@@ -38,7 +36,6 @@ extension CountriesAPI: TargetType {
     }
     
     var task: Task {
-        
         switch self {
         case .homeScreen:
             return .requestParameters(parameters: ["rapidapi-key": Constants.APIKey, "limit": "10"], encoding: URLEncoding.queryString)

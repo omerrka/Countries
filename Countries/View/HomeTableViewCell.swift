@@ -12,11 +12,7 @@ protocol HomeTableViewCellDelegate: AnyObject {
 }
 
 final class HomeTableViewCell: UITableViewCell {
-    
-    private var starIsSelected = false
     private let viewModel = HomeViewModel()
-    var myArray: [CountriesData]?
-    var model: CountriesData?
     public weak var delegate: HomeTableViewCellDelegate?
     var indexPath: IndexPath!
     
@@ -46,55 +42,40 @@ final class HomeTableViewCell: UITableViewCell {
         starButton.addTarget(self, action: #selector(starButtonAction(sender:)), for: .touchUpInside)
         setCountryTitleLabelConstraints()
         setStarButtonConstraints()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configureCell(myArray: [CountriesData], model: CountriesData) {
-        self.myArray = myArray
-        self.model = model
-        
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         countryTitleLabel.text = nil
-        
     }
     
     @objc
     func starButtonAction(sender: UIButton) {
-        
         delegate?.buttonTintColorChancer(indexPath, button: starButton)
-        let name = Notification.Name(rawValue: Constants.savedNotificationKey)
-        NotificationCenter.default.post(name: name, object: nil)
-        
+        NotificationCenter.default.post(name: Constants.savedNotification, object: nil)
     }
     
     public func setupCountryList(country: CountriesData) {
-        
         countryTitleLabel.text = "   " + "\(country.name)"
     }
     
     private func setCountryTitleLabelConstraints() {
-        
         countryTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         countryTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
         countryTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         countryTitleLabel.heightAnchor.constraint(equalToConstant: 52).isActive = true
         countryTitleLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         countryTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
     }
     
     private func setStarButtonConstraints() {
         starButton.translatesAutoresizingMaskIntoConstraints = false
         starButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24).isActive = true
         starButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
     }
 }
 

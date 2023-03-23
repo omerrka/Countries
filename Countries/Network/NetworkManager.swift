@@ -5,20 +5,16 @@
 //  Created by Ömer Karabulut on 20.03.2023.
 //
 
-
 import Moya
 
 protocol Networkable {
-    
     var provider: MoyaProvider<CountriesAPI> { get }
     
     func fetchCountriesResult(completion: @escaping (Result<Countries, Error>) -> ())
     func fetchCountryDetailResult(code: String, completion: @escaping (Result<CountryDetail, Error>) -> ())
-    
 }
 
 class NetworkManager: Networkable {
-    
     var provider = MoyaProvider<CountriesAPI>(plugins: [NetworkLoggerPlugin()])
     
     func fetchCountriesResult(completion: @escaping (Result<Countries, Error>) -> ()) {

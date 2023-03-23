@@ -1,5 +1,5 @@
 //
-//  MainTabBar.swift
+//  MainTabBarController.swift
 //  Countries
 //
 //  Created by Ömer Karabulut on 20.03.2023.
@@ -8,15 +8,12 @@
 import UIKit
 
 final class MainTabBarController: UITabBarController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpTabs()
-        
     }
     
     private func setUpTabs() {
-        
         let vc1 = RootNavigationController(rootViewController: HomeViewController())
         let vc2 = RootNavigationController(rootViewController: SavedViewController())
         
@@ -37,6 +34,5 @@ final class MainTabBarController: UITabBarController {
         self.tabBar.tintColor = .white
         self.tabBar.standardAppearance = appearance
         self.tabBar.scrollEdgeAppearance = appearance
-        
     }
 }

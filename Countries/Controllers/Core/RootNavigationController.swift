@@ -8,7 +8,6 @@
 import UIKit
 
 final class RootNavigationController: UINavigationController {
-    
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
     }
@@ -20,11 +19,9 @@ final class RootNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavigation()
-        
     }
     
     private func setUpNavigation() {
-        
         let appearance = UINavigationBarAppearance()
         
         appearance.configureWithOpaqueBackground()
@@ -33,8 +30,5 @@ final class RootNavigationController: UINavigationController {
         
         self.navigationBar.tintColor = .black
         self.navigationBar.standardAppearance = appearance
-        
     }
 }
-
-

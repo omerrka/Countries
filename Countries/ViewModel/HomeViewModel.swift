@@ -9,11 +9,9 @@ import UIKit
 
 protocol HomeViewModelDelegate: AnyObject {
     func reloadTableView()
-    
 }
 
 final class HomeViewModel: NSObject {
-    
     public weak var delegate: HomeViewModelDelegate?
     fileprivate(set) var countriesListData = [CountriesData]()
     
@@ -24,7 +22,6 @@ final class HomeViewModel: NSObject {
     }
     
     func loadCountriesData() {
-        
         networkManager.fetchCountriesResult(completion: { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {

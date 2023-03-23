@@ -8,8 +8,6 @@
 import Foundation
 
 final class SavedCountires {
-    
     static let shared = SavedCountires()
-    var myArray = [CountriesData]()
-//    var newArray = [CountriesData]()
+    var savedCountries = [CountriesData]()
 }

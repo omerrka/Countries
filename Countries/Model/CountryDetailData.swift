@@ -1,5 +1,5 @@
 //
-//  CountryDetailResponseModel.swift
+//  CountryDetailData.swift
 //  Countries
 //
 //  Created by Ömer Karabulut on 21.03.2023.

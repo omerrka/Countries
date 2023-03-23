@@ -8,8 +8,6 @@
 import UIKit
 
 final class SavedViewController: UIViewController {
-    
-    let savedNotification = Notification.Name(rawValue: Constants.savedNotificationKey)
     var tableView = UITableView()
     
     override func viewDidLoad() {
@@ -20,11 +18,15 @@ final class SavedViewController: UIViewController {
         navigationController?.navigationBar.topItem?.backButtonTitle = ""
         navigationItem.title = "Countries"
         createObservers()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     private func createObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(SavedViewController.reloadTableView(notification:)), name: savedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(SavedViewController.reloadTableView(notification:)), name: Constants.savedNotification, object: nil)
     }
     
     @objc
@@ -50,25 +52,22 @@ final class SavedViewController: UIViewController {
 }
 
 extension SavedViewController: UITableViewDelegate, UITableViewDataSource, SavedTableViewCellDelegate {
-    
     func removeStarButton(_ indexPath: IndexPath) {
-        SavedCountires.shared.myArray.remove(at: indexPath.row)
+        SavedCountires.shared.savedCountries.remove(at: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return SavedCountires.shared.myArray.count
+        return SavedCountires.shared.savedCountries.count
         
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.savedTableViewCell) as! SavedTableViewCell
-        cell.countryTitleLabel.text = "   " + "\(SavedCountires.shared.myArray[indexPath.row].name)"
+        cell.countryTitleLabel.text = "   " + "\(SavedCountires.shared.savedCountries[indexPath.row].name)"
         cell.delegate = self
         cell.indexPath = indexPath
         cell.backgroundColor = .systemGray4
         return cell
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -77,12 +76,10 @@ extension SavedViewController: UITableViewDelegate, UITableViewDataSource, Saved
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
-        vc.code = SavedCountires.shared.myArray[indexPath.row].code
-        vc.wikiID = SavedCountires.shared.myArray[indexPath.row].wikiDataID
+        vc.code = SavedCountires.shared.savedCountries[indexPath.row].code
         vc.indexPath = indexPath
-        vc.configureCells(newArray: SavedCountires.shared.myArray)
+        vc.configureCountries(countries: SavedCountires.shared.savedCountries)
         navigationController?.pushViewController(vc, animated: false)
         tableView.deselectRow(at: indexPath, animated: false)
     }
 }
-
