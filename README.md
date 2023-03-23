@@ -15,7 +15,8 @@
 #### * MVVM design pattern
 #### * Programmatic UI
 #### * Notification Observer Pattern
-#### * Protocol and Delegate Pattern
+#### * Protocol Delegate Pattern
+#### * Built in Xcode14
 
 
 ## Dependencies
